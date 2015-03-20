@@ -1,7 +1,7 @@
 // register service worker
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function(reg) {
+  navigator.serviceWorker.register('/sw-test-nocachesmatch/sw.js', { scope: '/sw-test-nocachesmatch/' }).then(function(reg) {
     // registration worked
     console.log('Registration succeeded. Scope is ' + reg.scope);
   }).catch(function(error) {
