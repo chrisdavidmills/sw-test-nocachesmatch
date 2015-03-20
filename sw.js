@@ -18,21 +18,18 @@ this.addEventListener('install', function(event) {
 });
 
 this.addEventListener('fetch', function(event) {
-  var cachedResponse = caches.open('v1').then(function(cache) {
-    cache.match(event.request).catch(function() {
-      return fetch(event.request).then(function(response) {
-        return caches.open('v1').then(function(cache) {
-          cache.put(event.request, response.clone());
-          return response;
-        });  
-      });
-    });
+  var cache;
+  var cachedResponse = caches.open('v1').then(function(c) {
+    cache = c;
+    return fetch(event.request);
+  }).then(function (response) {
+    cache.put(event.request, response.clone());
+    return response;
   }).catch(function() {
-    caches.open('v1').then(function(cache) {
-      return cache.match('/sw-test/gallery/myLittleVader.jpg');
-    })
+    if (!cache) {
+      return null;
+    }
+    return cache.match('/sw-test/gallery/myLittleVader.jpg');
   });
-    
-  event.respondWith(cachedResponse);
 });
 
